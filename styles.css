@@ -1,0 +1,68 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.desktop {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.bottom-bar {
+    position: fixed; /* Fixed position to keep it at the bottom */
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(124px);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.right-items {
+    position: fixed;
+    max-width: calc(100% - 40px); /* Set max-width to accommodate padding */
+    display: flex;
+    right: 60px;
+    align-items: center;
+}
+
+.right-items > div {
+    color: white;
+    margin-left: 20px; /* Add margin between items */
+}
+
+#time, #date, #battery {
+    color: white;
+}
+
+.context-menu {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.context-menu label {
+    padding: 10px;
+    cursor: pointer;
+    color: white;
+}
+
+.context-menu label:hover {
+    background: rgba(15, 15, 15, 0.3);
+}
