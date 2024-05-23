@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desktop UI</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Include Google Font Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+    <div class="desktop" id="desktop">
+        <div class="bottom-bar">
+            <div class="app-items">
+                <img width="40px" height="40px" src="logo.png">
+            </div>
+            <div class="right-items">
+                <div id="time" class="time"></div>
+                <div id="date" class="date"></div>
+                <div id="battery" class="battery"></div>
+            </div>
+        </div>
+        <div class="context-menu" id="context-menu">
+            <label for="upload-background">Upload Background</label>
+            <input type="file" id="upload-background" accept="image/*" style="display:none;">
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+    </style>
+</body>
+</html>
