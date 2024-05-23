@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                batteryElement.innerHTML = `<span class="material-symbols-rounded">${batteryIcon}</span>${batteryLevel}`;
+                batteryElement.innerHTML = `<span class="material-symbols-rounded">${batteryIcon}</span>`;
             }
 
             // Initial update
