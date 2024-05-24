@@ -24,7 +24,17 @@
         <div class="context-menu" id="context-menu">
             <label for="upload-background">Upload Background</label>
             <input type="file" id="upload-background" accept="image/*" style="display:none;">
+            <label id="add-app">Add App</label>
         </div>
+    </div>
+    <div id="app-form-container" class="app-form-container">
+        <form id="app-form" class="app-form">
+            <label for="app-name">App Name:</label>
+            <input type="text" id="app-name" required>
+            <label for="app-link">App Link:</label>
+            <input type="url" id="app-link" required>
+            <button type="submit">Add App</button>
+        </form>
     </div>
     <script src="script.js"></script>
 </body>

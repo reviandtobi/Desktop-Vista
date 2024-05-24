@@ -19,7 +19,7 @@ body, html {
 }
 
 .bottom-bar {
-    position: fixed; /* Fixed position to keep it at the bottom */
+    position: fixed;
     bottom: 0;
     width: 100%;
     height: 50px;
@@ -33,7 +33,7 @@ body, html {
 
 .right-items {
     position: fixed;
-    max-width: calc(100% - 40px); /* Set max-width to accommodate padding */
+    max-width: calc(100% - 40px);
     display: flex;
     right: 60px;
     align-items: center;
@@ -41,7 +41,7 @@ body, html {
 
 .right-items > div {
     color: white;
-    margin-left: 20px; /* Add margin between items */
+    margin-left: 20px;
 }
 
 #time, #date, #battery {
@@ -69,4 +69,44 @@ body, html {
 
 .context-menu label:hover {
     background: rgba(15, 15, 15, 0.3);
+}
+
+.app-form-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 2000;
+}
+
+.app-form label {
+    color: white;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.app-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.app-form button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+}
+
+.app-form button:hover {
+    background-color: #0056b3;
 }

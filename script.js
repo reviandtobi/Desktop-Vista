@@ -2,6 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const desktop = document.getElementById('desktop');
     const contextMenu = document.getElementById('context-menu');
     const uploadBackground = document.getElementById('upload-background');
+    const addAppButton = document.getElementById('add-app');
+    const appFormContainer = document.getElementById('app-form-container');
+    const appForm = document.getElementById('app-form');
+    const appItems = document.querySelector('.app-items');
 
     // Function to update time and date
     function updateTimeAndDate() {
@@ -50,6 +54,70 @@ document.addEventListener('DOMContentLoaded', () => {
         if (file) {
             reader.readAsDataURL(file);
         }
+    });
+
+    // Add app button event listener
+    addAppButton.addEventListener('click', () => {
+        appFormContainer.style.display = 'block';
+    });
+
+    // Close form when clicking outside
+    document.addEventListener('click', (event) => {
+        if (event.target === appFormContainer) {
+            appFormContainer.style.display = 'none';
+        }
+    });
+
+    appForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        const appName = document.getElementById('app-name').value;
+        const appLink = document.getElementById('app-link').value;
+        const favicon = await fetchFavicon(appLink);
+
+        const appIcon = document.createElement('img');
+        appIcon.src = favicon;
+        appIcon.alt = appName;
+        appIcon.title = appName;
+        appIcon.width = 40;
+        appIcon.height = 40;
+        appIcon.style.cursor = 'pointer';
+        appIcon.addEventListener('click', () => {
+            window.open(appLink, '_blank');
+        });
+
+        appItems.appendChild(appIcon);
+        appForm.reset();
+        appFormContainer.style.display = 'none';
+
+        // Save to local storage
+        const apps = JSON.parse(localStorage.getItem('apps')) || [];
+        apps.push({ name: appName, link: appLink, favicon: favicon });
+        localStorage.setItem('apps', JSON.stringify(apps));
+    });
+
+    // Fetch favicon
+    async function fetchFavicon(url) {
+        const response = await fetch(`https://favicongrabber.com/api/grab/${url}`);
+        const data = await response.json();
+        return data.icons[0].src || 'default-favicon.png';
+    }
+
+    // Load apps from local storage
+    const savedApps = JSON.parse(localStorage.getItem('apps')) || [];
+    savedApps.forEach(app => {
+        const appIcon = document.createElement('img');
+        appIcon.src = app.favicon;
+        appIcon.alt = app.name;
+        appIcon.title = app.name;
+        appIcon.width = 40;
+        appIcon.height = 40;
+        appIcon.style.cursor = 'pointer';
+        appIcon.addEventListener('click', () => {
+            window.open(app.link, '_blank');
+        });
+
+        appItems.appendChild(appIcon);
     });
 
     // Battery Status
