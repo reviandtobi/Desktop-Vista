@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
         contextMenu.style.display = 'flex';
         contextMenu.style.left = `${event.pageX}px`;
         contextMenu.style.top = `${event.pageY}px`;
+        bottomBarMenu.style.display = 'none';
+        appMenu.style.display = 'none';
     });
 
     bottomBar.addEventListener('contextmenu', (event) => {
@@ -40,6 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
         bottomBarMenu.style.display = 'flex';
         bottomBarMenu.style.left = `${event.pageX}px`;
         bottomBarMenu.style.top = `${event.pageY}px`;
+        contextMenu.style.display = 'none';
+        appMenu.style.display = 'none';
     });
 
     document.addEventListener('click', () => {

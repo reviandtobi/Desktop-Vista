@@ -70,3 +70,7 @@ body, html {
 .context-menu label:hover {
     background: rgba(15, 15, 15, 0.3);
 }
+
+.app-icon {
+    cursor: pointer;
+}
