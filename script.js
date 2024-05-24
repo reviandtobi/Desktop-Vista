@@ -2,10 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const desktop = document.getElementById('desktop');
     const contextMenu = document.getElementById('context-menu');
     const uploadBackground = document.getElementById('upload-background');
-    const addAppButton = document.getElementById('add-app');
-    const appFormContainer = document.getElementById('app-form-container');
-    const appForm = document.getElementById('app-form');
-    const appItems = document.querySelector('.app-items');
+    const appItems = document.getElementById('appItems');
 
     // Function to update time and date
     function updateTimeAndDate() {
@@ -30,9 +27,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     desktop.addEventListener('contextmenu', (event) => {
         event.preventDefault();
+        const posX = event.pageX;
+        const posY = event.pageY;
+        const menuWidth = contextMenu.offsetWidth;
+        const menuHeight = contextMenu.offsetHeight;
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        let x = posX;
+        let y = posY;
+
+        // Check if context menu goes off screen horizontally
+        if (posX + menuWidth > windowWidth) {
+            x = windowWidth - menuWidth;
+        }
+
+        // Check if context menu goes off screen vertically
+        if (posY + menuHeight > windowHeight) {
+            y = windowHeight - menuHeight;
+        }
+
+        contextMenu.style.left = `${x}px`;
+        contextMenu.style.top = `${y}px`;
         contextMenu.style.display = 'flex';
-        contextMenu.style.left = `${event.pageX}px`;
-        contextMenu.style.top = `${event.pageY}px`;
     });
 
     document.addEventListener('click', () => {
@@ -56,74 +73,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Add app button event listener
-    addAppButton.addEventListener('click', (event) => {
-        event.stopPropagation(); // Prevent event from propagating to the document
-        appFormContainer.style.display = 'block';
-    });
-
-    // Close form when clicking outside
-    document.addEventListener('click', (event) => {
-        if (event.target === appFormContainer) {
-            appFormContainer.style.display = 'none';
-        }
-    });
-
-    appForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        
-        const appName = document.getElementById('app-name').value;
-        const appLink = document.getElementById('app-link').value;
-        const favicon = await fetchFavicon(appLink);
-
-        const appIcon = document.createElement('img');
-        appIcon.src = favicon;
-        appIcon.alt = appName;
-        appIcon.title = appName;
-        appIcon.width = 40;
-        appIcon.height = 40;
-        appIcon.style.cursor = 'pointer';
-        appIcon.addEventListener('click', () => {
-            window.open(appLink, '_blank');
-        });
-
-        appItems.appendChild(appIcon);
-        appForm.reset();
-        appFormContainer.style.display = 'none';
-
-        // Save to local storage
+    // Delete app functionality
+    function deleteApp(appElement) {
+        const appName = appElement.getAttribute('data-name');
         const apps = JSON.parse(localStorage.getItem('apps')) || [];
-        apps.push({ name: appName, link: appLink, favicon: favicon });
-        localStorage.setItem('apps', JSON.stringify(apps));
-    });
-
-    // Fetch favicon
-    async function fetchFavicon(url) {
-        try {
-            const response = await fetch(`https://favicongrabber.com/api/grab/${url}`);
-            const data = await response.json();
-            return data.icons[0].src || 'default-favicon.png';
-        } catch (error) {
-            console.error('Failed to fetch favicon:', error);
-            return 'default-favicon.png';
-        }
+        const updatedApps = apps.filter(app => app.name !== appName);
+        localStorage.setItem('apps', JSON.stringify(updatedApps));
+        appElement.remove();
     }
 
-    // Load apps from local storage
-    const savedApps = JSON.parse(localStorage.getItem('apps')) || [];
-    savedApps.forEach(app => {
-        const appIcon = document.createElement('img');
-        appIcon.src = app.favicon;
-        appIcon.alt = app.name;
-        appIcon.title = app.name;
-        appIcon.width = 40;
-        appIcon.height = 40;
-        appIcon.style.cursor = 'pointer';
-        appIcon.addEventListener('click', () => {
-            window.open(app.link, '_blank');
-        });
+    // Add event listener to app items for right-click
+    appItems.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        const appElement = event.target.closest('img');
+        const posX = event.pageX;
+        const posY = event.pageY;
+        const menuWidth = contextMenu.offsetWidth;
+        const menuHeight = contextMenu.offsetHeight;
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
 
-        appItems.appendChild(appIcon);
+        let x = posX;
+        let y = posY;
+
+        // Check if context menu goes off screen horizontally
+        if (posX + menuWidth > windowWidth) {
+            x = windowWidth - menuWidth;
+        }
+
+        // Check if context menu goes off screen vertically
+        if (posY + menuHeight > windowHeight) {
+            y = windowHeight - menuHeight;
+        }
+
+        contextMenu.innerHTML = `<label onclick="deleteApp(this.parentElement.parentElement)">Delete</label>`;
+        contextMenu.style.left = `${x}px`;
+        contextMenu.style.top = `${y}px`;
+        contextMenu.style.display = 'flex';
     });
 
     // Battery Status
@@ -185,4 +171,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update time and date every second
     updateTimeAndDate();
     setInterval(updateTimeAndDate, 1000);
+});
+
+// Drag and drop functionality
+function drag(event) {
+    event.dataTransfer.setData('text/plain', event.target.id);
+}
+
+const appItems = document.getElementById('appItems');
+
+appItems.addEventListener('dragover', (event) => {
+    event.preventDefault();
+});
+
+appItems.addEventListener('drop', (event) => {
+    event.preventDefault();
+    const appId = event.dataTransfer.getData('text/plain');
+    const appElement = document.getElementById(appId);
+    appItems.appendChild(appElement);
 });
