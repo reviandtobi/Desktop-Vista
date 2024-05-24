@@ -57,7 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Add app button event listener
-    addAppButton.addEventListener('click', () => {
+    addAppButton.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevent event from propagating to the document
         appFormContainer.style.display = 'block';
     });
 
@@ -98,9 +99,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch favicon
     async function fetchFavicon(url) {
-        const response = await fetch(`https://favicongrabber.com/api/grab/${url}`);
-        const data = await response.json();
-        return data.icons[0].src || 'default-favicon.png';
+        try {
+            const response = await fetch(`https://favicongrabber.com/api/grab/${url}`);
+            const data = await response.json();
+            return data.icons[0].src || 'default-favicon.png';
+        } catch (error) {
+            console.error('Failed to fetch favicon:', error);
+            return 'default-favicon.png';
+        }
     }
 
     // Load apps from local storage
