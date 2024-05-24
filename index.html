@@ -11,8 +11,8 @@
 </head>
 <body>
     <div class="desktop" id="desktop">
-        <div class="bottom-bar">
-            <div class="app-items">
+        <div class="bottom-bar" id="bottom-bar">
+            <div class="app-items" id="app-items">
                 <img width="40px" height="40px" src="logo.png">
             </div>
             <div class="right-items">
@@ -25,8 +25,13 @@
             <label for="upload-background">Upload Background</label>
             <input type="file" id="upload-background" accept="image/*" style="display:none;">
         </div>
+        <div class="context-menu" id="bottom-bar-menu">
+            <label id="add-app">Add App</label>
+        </div>
+        <div class="context-menu" id="app-menu">
+            <label id="remove-app">Remove App</label>
+        </div>
     </div>
     <script src="script.js"></script>
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
 </body>
 </html>

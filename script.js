@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     const desktop = document.getElementById('desktop');
     const contextMenu = document.getElementById('context-menu');
+    const bottomBarMenu = document.getElementById('bottom-bar-menu');
+    const appMenu = document.getElementById('app-menu');
     const uploadBackground = document.getElementById('upload-background');
+    const bottomBar = document.getElementById('bottom-bar');
+    const appItems = document.getElementById('app-items');
 
     // Function to update time and date
     function updateTimeAndDate() {
@@ -31,8 +35,17 @@ document.addEventListener('DOMContentLoaded', () => {
         contextMenu.style.top = `${event.pageY}px`;
     });
 
+    bottomBar.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        bottomBarMenu.style.display = 'flex';
+        bottomBarMenu.style.left = `${event.pageX}px`;
+        bottomBarMenu.style.top = `${event.pageY}px`;
+    });
+
     document.addEventListener('click', () => {
         contextMenu.style.display = 'none';
+        bottomBarMenu.style.display = 'none';
+        appMenu.style.display = 'none';
     });
 
     uploadBackground.addEventListener('change', (event) => {
@@ -111,4 +124,52 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update time and date every second
     updateTimeAndDate();
     setInterval(updateTimeAndDate, 1000);
+
+    // Add App functionality
+    document.getElementById('add-app').addEventListener('click', () => {
+        const appUrl = prompt('Enter the URL of the app:');
+        if (appUrl) {
+            const link = document.createElement('a');
+            link.href = appUrl;
+            link.rel = 'icon';
+            document.head.appendChild(link);
+
+            link.onload = () => {
+                const faviconUrl = link.href;
+                const appIcon = document.createElement('img');
+                appIcon.src = faviconUrl;
+                appIcon.width = 40;
+                appIcon.height = 40;
+                appIcon.classList.add('app-icon');
+                appIcon.dataset.url = appUrl;
+                appItems.appendChild(appIcon);
+                document.head.removeChild(link);
+            };
+
+            link.onerror = () => {
+                alert('Failed to fetch the favicon.');
+                document.head.removeChild(link);
+            };
+        }
+    });
+
+    appItems.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        if (event.target.classList.contains('app-icon')) {
+            appMenu.style.display = 'flex';
+            appMenu.style.left = `${event.pageX}px`;
+            appMenu.style.top = `${event.pageY}px`;
+            appMenu.dataset.targetApp = event.target.src;
+        }
+    });
+
+    document.getElementById('remove-app').addEventListener('click', () => {
+        const targetApp = appMenu.dataset.targetApp;
+        if (targetApp) {
+            const appIcon = [...appItems.children].find(app => app.src === targetApp);
+            if (appIcon) {
+                appItems.removeChild(appIcon);
+            }
+        }
+    });
 });
